@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -13,7 +13,7 @@ model Generation {
   imageUrl  String
   provider  String
   status    GenerationStatus
-  error     String?          // store failure information
+  error     String? // store failure information
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 }

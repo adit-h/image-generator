@@ -7,9 +7,11 @@ export class PollinationsProvider implements ImageProvider {
     const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(
       input.prompt,
     )}`;
+    const provider = "pollinations";
 
     return {
       imageUrl,
+      provider,
     };
   }
 }
