@@ -8,9 +8,19 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const parsed = GenerateImageSchema.parse(body);
+    const parsed = GenerateImageSchema.safeParse(body);
+    if (!parsed.success) {
+      return Response.json(
+        {
+          error: "Prompt is required",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
 
-    const image = await generateImage({ prompt: parsed.prompt });
+    const image = await generateImage({ prompt: parsed.data?.prompt });
 
     return Response.json(image);
   } catch (error) {
