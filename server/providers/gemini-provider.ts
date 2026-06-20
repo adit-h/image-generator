@@ -10,6 +10,7 @@ export class GeminiProvider implements ImageProvider {
       model: "gemini-2.5-flash-image",
       contents: input.prompt,
     });
+    const provider = "gemini";
 
     // TODO: Need to check the return response format
     console.log(response);
@@ -18,6 +19,6 @@ export class GeminiProvider implements ImageProvider {
       throw new Error("No return response from Gemini");
     }
 
-    return { imageUrl: response.data || "" };
+    return { imageUrl: response.data || "", provider };
   }
 }
