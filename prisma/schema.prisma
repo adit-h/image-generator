@@ -6,3 +6,20 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Generation {
+  id        String           @id @default(cuid())
+  prompt    String
+  imageUrl  String
+  provider  String
+  status    GenerationStatus
+  error     String?          // store failure information
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+enum GenerationStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
