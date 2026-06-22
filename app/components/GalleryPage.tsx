@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useGallery } from "@/hooks/use-gallery";
+import { GalleryCard } from "@/app/components/GalleryCard";
 
 export function GalleryPage() {
   const {
@@ -53,19 +54,14 @@ export function GalleryPage() {
 
   return (
     <div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {images.map((image) => (
-          <div
+          <GalleryCard
             key={image.id}
-            className="relative aspect-square overflow-hidden rounded-lg bg-gray-100"
-          >
-            <img
-              src={image.imageUrl}
-              alt={image.prompt}
-              className="object-cover"
-              sizes="(max-width: 768px) 50vw, 25vw"
-            />
-          </div>
+            imageUrl={image.imageUrl}
+            prompt={image.prompt}
+            createdAt={image.createdAt}
+          />
         ))}
       </div>
 

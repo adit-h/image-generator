@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { promptSchema } from "@/lib/validator";
 import { useState } from "react";
 
-export default function PromptForm() {
+export default function PromptPage() {
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
