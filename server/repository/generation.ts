@@ -17,7 +17,7 @@ export async function createGeneration(data: generationParam) {
       prompt: data.prompt,
       imageUrl: data.imageUrl,
       provider: data.provider,
-      status: "SUCCESS",
+      status: "PENDING",
     },
   });
 }
@@ -43,4 +43,29 @@ export async function getGenerations({ cursor, limit }: getGenerationsParams) {
   const nextCursor = hasNextPage ? items[items.length - 1].id : null;
 
   return { items, nextCursor };
+}
+
+export async function markGenerationSuccess(id: string, imageUrl: string) {
+  return prisma.generation.update({
+    where: {
+      id,
+    },
+    data: {
+      imageUrl,
+      status: "SUCCESS",
+      error: null,
+    },
+  });
+}
+
+export async function markGenerationFailed(id: string, error: string) {
+  return prisma.generation.update({
+    where: {
+      id,
+    },
+    data: {
+      status: "FAILED",
+      error,
+    },
+  });
 }
