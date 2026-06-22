@@ -3,9 +3,14 @@
 import { cn } from "@/lib/utils";
 import { promptSchema } from "@/lib/validator";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function PromptPage() {
-  const [prompt, setPrompt] = useState("");
+  const searchParams = useSearchParams();
+  const [reuseFlag, setReuseFlag] = useState(
+    searchParams.get("prompt") ? true : false,
+  );
+  const [prompt, setPrompt] = useState(searchParams.get("prompt") ?? "");
   const [imageUrl, setImageUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
@@ -47,20 +52,29 @@ export default function PromptPage() {
         prompt,
       }),
     });
+    console.log("Generate log >>> ", response);
+
+    if (!response.ok) {
+      const errBody = await response.json().catch(() => null);
+      throw new Error(errBody?.error ?? "Failed to generate image");
+    }
 
     const data = await response.json();
-
+    setImageLoading(true);
     setImageUrl(data.imageUrl);
   }
 
   return (
     <>
       <form onSubmit={handleSubmit} className="w-full">
+        <div className="text-right text-sm text-zinc-500 dark:text-zinc-400">
+          {prompt.length} / {maxLength}
+        </div>
         <div className="relative">
           <textarea
             id="main-prompt"
             cols={4}
-            rows={3}
+            rows={4}
             maxLength={maxLength}
             placeholder="Start typing prompt to generate image"
             value={prompt}
@@ -77,9 +91,11 @@ export default function PromptPage() {
           >
             {isLoading ? "Generating..." : "Generate"}
           </button>
-        </div>
-        <div className="text-right text-sm text-zinc-500 dark:text-zinc-400">
-          {prompt.length} / {maxLength}
+          {reuseFlag && (
+            <div className="absolute bottom-4 left-3 text-xs italic text-gray-400 py-1 px-2 border-1 border-dashed rounded-lg">
+              Reuse prompt
+            </div>
+          )}
         </div>
         {error && <div className="text-red-500">{error}</div>}
       </form>
