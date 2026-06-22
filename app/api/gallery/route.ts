@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getGenerations } from "@/server/repository/generation";
 
-const LIMIT_DATA = 20;
+const LIMIT_DATA = 12;
 
 export async function GET(request: NextRequest) {
   try {

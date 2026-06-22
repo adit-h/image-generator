@@ -7,7 +7,7 @@ type GalleryPage = {
 };
 
 async function fetchGallery(cursor?: string): Promise<GalleryPage> {
-  const params = new URLSearchParams({ limit: "20" });
+  const params = new URLSearchParams({ limit: "10" });
   if (cursor) params.set("cursor", cursor);
 
   const res = await fetch(`/api/gallery?${params}`);

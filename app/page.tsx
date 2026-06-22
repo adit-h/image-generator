@@ -4,7 +4,7 @@ import PromptForm from "@/app/components/PromptPage";
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white font-sans dark:bg-black">
-      <main className="w-full max-w-5xl flex flex-col items-start py-32 px-16 bg-white dark:bg-black sm:items-start">
+      <main className="w-full max-w-5xl flex flex-col items-start py-3 px-16 bg-white dark:bg-black sm:items-start">
         <Suspense fallback={<PromptFormSkeleton />}>
           <PromptForm />
         </Suspense>
