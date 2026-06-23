@@ -18,30 +18,17 @@ export function GalleryPage() {
 
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * How it works:
-   * Each time deps change, a new IntersectionObserver is created with isPending = true
-   * The immediate trigger (sentinel already in viewport) is consumed as a "reset signal" — sets isPending = false and returns without fetching
-   * Actual user scrolls hit isPending = false, pass the guard, set isPending = true, and call fetchNextPage()
-   * Old observer is disconnected in cleanup before the new one is created
-   */
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
-    let isPending = true;
-
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (!entry.isIntersecting) return;
-        if (isPending) {
-          isPending = false;
-          return;
+        // Only trigger if sentinel is visible AND we have more pages AND not already fetching
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
         }
-        if (!hasNextPage) return;
-        isPending = true;
-        fetchNextPage();
       },
       { rootMargin: "200px" },
     );
@@ -88,13 +75,13 @@ export function GalleryPage() {
         ))}
       </div>
 
-      <div ref={sentinelRef} className="h-10" />
       {isFetchingNextPage && <LoadingSpinner />}
       {!hasNextPage && (
         <div className="p-4 text-center text-sm text-gray-400">
           You have reached the end.
         </div>
       )}
+      <div ref={sentinelRef} className="h-10" />
     </div>
   );
 }
