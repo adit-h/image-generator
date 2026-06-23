@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useGallery } from "@/hooks/use-gallery";
 import { GalleryCard } from "@/app/components/GalleryCard";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export function GalleryPage() {
   const {
@@ -68,14 +69,14 @@ export function GalleryPage() {
   }
 
   return (
-    <div>
+    <div className="text-white">
       <div className="flex items-center justify-between mb-4">
         <div className="text-2xl font-semibold">Gallery</div>
-        <div className="text-gray-500 text-sm font-normal self-end">
+        <div className="text-sm font-normal self-end">
           ({images.length} {images.length === 1 ? "image" : "images"})
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {images.map((image) => (
           <GalleryCard
             key={image.id}
@@ -87,17 +88,7 @@ export function GalleryPage() {
       </div>
 
       <div ref={sentinelRef} className="h-10" />
-
-      {isFetchingNextPage && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div
-              key={i}
-              className="aspect-square rounded-lg bg-gray-100 animate-pulse"
-            />
-          ))}
-        </div>
-      )}
+      {isFetchingNextPage && <LoadingSpinner />}
       {!hasNextPage && (
         <div className="p-4 text-center text-sm text-gray-400">
           You have reached the end.

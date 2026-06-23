@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 type GalleryCardProps = {
@@ -27,8 +28,8 @@ export function GalleryCard({ imageUrl, prompt, createdAt }: GalleryCardProps) {
         >
           Reuse Prompt
         </Link>
-        <div className="text-white text-sm italic">
-          Generated ({new Date(createdAt).toLocaleDateString()})
+        <div className="flex text-white text-xs italic">
+          Generated ({formatDate(createdAt)})
         </div>
       </div>
     </div>
