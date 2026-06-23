@@ -82,6 +82,7 @@ export function GalleryPage() {
             key={image.id}
             imageUrl={image.imageUrl}
             prompt={image.prompt}
+            model={image.model ?? ""}
             createdAt={image.createdAt}
           />
         ))}

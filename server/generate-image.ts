@@ -12,6 +12,7 @@ export async function generateImage(input: GenerateImageInput) {
 
   const result = await provider.generate({
     prompt: input.prompt,
+    model: input.model,
   });
 
   const generation = await createGeneration({

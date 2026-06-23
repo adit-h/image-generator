@@ -5,6 +5,7 @@ import { GenerateImageSchema } from "@/lib/validator";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { POLLI_MODELS } from "@/lib/constant";
 
 export default function PromptPage() {
   const searchParams = useSearchParams();
@@ -16,6 +17,7 @@ export default function PromptPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const [error, setError] = useState("");
+  const [model, setModel] = useState<string>("");
   const maxLength = 300;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,7 +26,7 @@ export default function PromptPage() {
     if (prompt.trim()) {
       console.log("Submitting prompt:", prompt);
 
-      const parsed = GenerateImageSchema.safeParse({ prompt });
+      const parsed = GenerateImageSchema.safeParse({ prompt, model });
       if (!parsed.success) {
         const issue = parsed.error.issues[0];
         setError(issue.message ?? "Invalid prompt");
@@ -51,6 +53,7 @@ export default function PromptPage() {
       },
       body: JSON.stringify({
         prompt,
+        model,
       }),
     });
     console.log("Generate log >>> ", response);
@@ -83,7 +86,7 @@ export default function PromptPage() {
           <label className="block text-sm font-medium">
             Describe the space you&rsquo;d like to create
           </label>{" "}
-          <div className="text-right text-xs text-zinc-500 dark:text-zinc-400 py-1">
+          <div className="text-right text-xs text-zinc-300 dark:text-zinc-400 py-1 mb-0">
             {prompt.length} / {maxLength}
           </div>
         </div>
@@ -101,6 +104,20 @@ export default function PromptPage() {
                 error && "border-red-500",
               )}
             />
+            <select
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className="absolute bottom-3 right-2 rounded-md border border-zinc-300 bg-white px-2 py-1 text-xs font-medium text-zinc-900 shadow-sm focus:outline-none dark:border-zinc-600 dark:bg-zinc-700 dark:text-white dark:focus:ring-white"
+            >
+              <option value="" disabled>
+                Select model
+              </option>
+              {POLLI_MODELS.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
             {reuseFlag && (
               <div className="absolute bottom-3 right-2 text-xs italic text-gray-400 py-1 px-2 border-1 border-dashed rounded-lg">
                 Reuse prompt

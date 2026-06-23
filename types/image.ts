@@ -6,4 +6,5 @@ export interface GeneratedImage {
 
 export interface GenerateImageInput {
   prompt: string;
+  model?: string;
 }

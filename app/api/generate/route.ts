@@ -20,7 +20,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const image = await generateImage({ prompt: parsed.data?.prompt });
+    const image = await generateImage({
+      prompt: parsed.data?.prompt,
+      model: parsed.data?.model,
+    });
 
     return Response.json(image);
   } catch (error) {

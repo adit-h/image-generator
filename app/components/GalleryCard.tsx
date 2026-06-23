@@ -6,10 +6,16 @@ import Link from "next/link";
 type GalleryCardProps = {
   imageUrl: string;
   prompt: string;
+  model: string;
   createdAt: Date;
 };
 
-export function GalleryCard({ imageUrl, prompt, createdAt }: GalleryCardProps) {
+export function GalleryCard({
+  imageUrl,
+  prompt,
+  model,
+  createdAt,
+}: GalleryCardProps) {
   return (
     <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 group">
       <img
@@ -32,6 +38,11 @@ export function GalleryCard({ imageUrl, prompt, createdAt }: GalleryCardProps) {
           Generated ({formatDate(createdAt)})
         </div>
       </div>
+      {model && (
+        <div className="absolute bottom-1 right-1 rounded-lg px-2 py-1 bg-black/60 text-xs text-white truncate">
+          {model}
+        </div>
+      )}
     </div>
   );
 }
