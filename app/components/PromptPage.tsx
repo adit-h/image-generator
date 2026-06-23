@@ -1,9 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { promptSchema } from "@/lib/validator";
+import { GenerateImageSchema } from "@/lib/validator";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function PromptPage() {
   const searchParams = useSearchParams();
@@ -23,7 +24,7 @@ export default function PromptPage() {
     if (prompt.trim()) {
       console.log("Submitting prompt:", prompt);
 
-      const parsed = promptSchema.safeParse({ prompt });
+      const parsed = GenerateImageSchema.safeParse({ prompt });
       if (!parsed.success) {
         const issue = parsed.error.issues[0];
         setError(issue.message ?? "Invalid prompt");
@@ -56,7 +57,7 @@ export default function PromptPage() {
 
     if (!response.ok) {
       const errBody = await response.json().catch(() => null);
-      throw new Error(errBody?.error ?? "Failed to generate image");
+      throw new Error(errBody?.error ?? "Failed to generate design");
     }
 
     const data = await response.json();
@@ -106,7 +107,7 @@ export default function PromptPage() {
               </div>
             )}
           </div>
-          {error && <div className="text-red-500">{error}</div>}
+          {error && <div className="text-red-300">{error}</div>}
           <button
             type="submit"
             disabled={!prompt.trim() || isLoading}
@@ -118,27 +119,34 @@ export default function PromptPage() {
         {/* Preview generated image */}
         {imageUrl && (
           <div className="mt-6">
-            <h2 className="mb-2 text-sm font-medium text-slate-500">
-              Generated Design
-            </h2>
-
-            <div className="relative w-full">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-sm font-medium">Generated Design</h2>
+              <Link
+                href="/gallery"
+                className="text-center text-xs p-2 text-amber-500 hover:text-amber-300 underline rounded-lg"
+              >
+                View Gallery
+              </Link>
+            </div>
+            <div className="relative w-full flex flex-col items-center justify-center gap-4">
               {imageLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg">
                   <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-700 rounded-full animate-spin"></div>
                 </div>
               )}
-              <img
-                src={imageUrl}
-                alt={prompt}
-                className={cn(
-                  "w-96 rounded-lg mx-auto",
-                  imageLoading ? "opacity-0" : "opacity-100",
-                )}
-                width={256}
-                height={256}
-                onLoad={() => setImageLoading(false)}
-              />
+              <div className="flex relative">
+                <img
+                  src={imageUrl}
+                  alt={prompt}
+                  className={cn(
+                    "w-96 rounded-lg mx-auto",
+                    imageLoading ? "opacity-0" : "opacity-100",
+                  )}
+                  width={256}
+                  height={256}
+                  onLoad={() => setImageLoading(false)}
+                />
+              </div>
             </div>
           </div>
         )}
