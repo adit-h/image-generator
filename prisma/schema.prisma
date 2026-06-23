@@ -12,6 +12,7 @@ model Generation {
   prompt    String
   imageUrl  String
   provider  String           @db.VarChar(50)
+  model     String?          @db.VarChar(50)
   status    GenerationStatus @default(PENDING)
   error     String?          @db.Text // store failure information
   createdAt DateTime         @default(now())

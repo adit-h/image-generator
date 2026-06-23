@@ -1,6 +1,7 @@
 export interface GeneratedImage {
   imageUrl: string;
   provider: string;
+  model: string;
 }
 
 export interface GenerateImageInput {

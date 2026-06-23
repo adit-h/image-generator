@@ -4,6 +4,7 @@ type generationParam = {
   prompt: string;
   imageUrl: string;
   provider: string;
+  model: string;
 };
 
 type getGenerationsParams = {
@@ -17,6 +18,7 @@ export async function createGeneration(data: generationParam) {
       prompt: data.prompt,
       imageUrl: data.imageUrl,
       provider: data.provider,
+      model: data.model,
       status: "PENDING",
     },
   });
@@ -45,13 +47,20 @@ export async function getGenerations({ cursor, limit }: getGenerationsParams) {
   return { items, nextCursor };
 }
 
-export async function markGenerationSuccess(id: string, imageUrl: string) {
+export async function markGenerationSuccess(
+  id: string,
+  imageUrl: string,
+  provider?: string,
+  model?: string,
+) {
   return prisma.generation.update({
     where: {
       id,
     },
     data: {
       imageUrl,
+      provider,
+      model,
       status: "SUCCESS",
       error: null,
     },

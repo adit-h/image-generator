@@ -7,6 +7,7 @@ CREATE TABLE "Generation" (
     "prompt" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
+    "model" TEXT,
     "status" "GenerationStatus" NOT NULL,
     "error" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

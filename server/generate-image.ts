@@ -18,6 +18,7 @@ export async function generateImage(input: GenerateImageInput) {
     prompt: input.prompt,
     imageUrl: result.imageUrl,
     provider: result.provider,
+    model: result.model,
   });
 
   try {
