@@ -67,12 +67,17 @@ export async function markGenerationSuccess(
   });
 }
 
-export async function markGenerationFailed(id: string, error: string) {
+export async function markGenerationFailed(
+  id: string,
+  imageUrl: string,
+  error: string,
+) {
   return prisma.generation.update({
     where: {
       id,
     },
     data: {
+      imageUrl,
       status: "FAILED",
       error,
     },

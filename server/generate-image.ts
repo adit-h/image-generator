@@ -15,6 +15,7 @@ export async function generateImage(input: GenerateImageInput) {
     model: input.model,
   });
 
+  // insert to database
   const generation = await createGeneration({
     prompt: input.prompt,
     imageUrl: result.imageUrl,
@@ -22,16 +23,14 @@ export async function generateImage(input: GenerateImageInput) {
     model: result.model,
   });
 
-  try {
-    await markGenerationSuccess(generation.id, result.imageUrl);
-
+  if (result.error) {
+    // update generation to failed
+    result.imageUrl = ""; // set to empty
+    await markGenerationFailed(generation.id, result.imageUrl, result.error);
     return result;
-  } catch (error) {
-    await markGenerationFailed(
-      generation.id,
-      error instanceof Error ? error.message : "Unknown error",
-    );
-
-    throw error;
   }
+
+  // update generation to success
+  await markGenerationSuccess(generation.id, result.imageUrl);
+  return result;
 }

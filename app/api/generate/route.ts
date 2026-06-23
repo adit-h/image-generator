@@ -41,20 +41,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (error instanceof Error && error.message === "Timeout") {
+    if (error instanceof Error) {
       return Response.json(
         {
-          error: "Image generation timed out",
+          error: `Failed to generate image - ${error.message}`,
         },
         {
-          status: 408,
+          status: 400,
         },
       );
     }
 
     return Response.json(
       {
-        error: "Failed to generate image",
+        error: `Failed to generate image`,
       },
       {
         status: 500,
