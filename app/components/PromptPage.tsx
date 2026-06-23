@@ -9,15 +9,13 @@ import { POLLI_MODELS } from "@/lib/constant";
 
 export default function PromptPage() {
   const searchParams = useSearchParams();
-  const [reuseFlag, setReuseFlag] = useState(
-    searchParams.get("prompt") ? true : false,
-  );
+  const reuseFlag = searchParams.get("prompt") ? true : false;
   const [prompt, setPrompt] = useState(searchParams.get("prompt") ?? "");
   const [imageUrl, setImageUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const [error, setError] = useState("");
-  const [model, setModel] = useState<string>("");
+  const [model, setModel] = useState<string>("seedream5");
   const maxLength = 300;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -119,12 +117,12 @@ export default function PromptPage() {
               ))}
             </select>
             {reuseFlag && (
-              <div className="absolute bottom-3 right-2 text-xs italic text-gray-400 py-1 px-2 border-1 border-dashed rounded-lg">
+              <div className="absolute bottom-3 left-3 text-xs italic text-gray-400 py-1 px-2 border-1 border-dashed rounded-lg">
                 Reuse prompt
               </div>
             )}
           </div>
-          {error && <div className="text-red-300">{error}</div>}
+          {error && <div className="text-red-400 mb-2">{error}</div>}
           <button
             type="submit"
             disabled={!prompt.trim() || isLoading}
