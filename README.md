@@ -13,7 +13,7 @@ tags: ["markdown", "generator", "mermaid", "ai", "open-source"]
 - Reuse previous prompts
 - Error handling
 - Loading states
-- PostgreSQL persistence
+- PostgreSQL database
 
 ## Tech Stack
 
@@ -71,11 +71,22 @@ IMAGE_PROVIDER=
 - Pollinations was selected due to Gemini quota limitations.
 - Provider abstraction allows easy migration to Gemini.
 - Background job queues were intentionally omitted to keep the solution focused and deliverable within the assessment timeline.
+- All gallery images still open to public.
 
-## Future improvements
+## Future Improvements
 
-- Background jobs
-- Cloudinary image persistence
-- Authentication
-- Rate limiting
-- Caching
+### Background Jobs
+
+Move image generation into a job queue (e.g., pg-boss) to avoid long-running HTTP requests and improve scalability.
+
+### Authentication
+
+Add user accounts and associate generated images with individual users to support private galleries and usage tracking.
+
+### Rate Limiting
+
+Introduce per-user and per-IP rate limiting to prevent abuse and protect image generation resources.
+
+### Caching
+
+Cache previously generated prompts to reduce latency, improve user experience, and minimize external API usage.
