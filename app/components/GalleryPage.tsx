@@ -51,29 +51,42 @@ export function GalleryPage() {
 
   if (images.length === 0) {
     return (
-      <div className="p-8 text-center text-gray-500">No generations yet.</div>
+      <div className="flex flex-col items-center justify-center w-full">
+        <img
+          src="/bed.png"
+          alt="No generations"
+          className="rounded-lg"
+          width={64}
+          height={64}
+        />
+        <div className="p-4 text-center text-white">No generations yet...</div>
+      </div>
     );
   }
 
   return (
     <div className="text-white">
-      <div className="flex items-center justify-between mb-4">
-        <div className="text-2xl font-semibold">Gallery</div>
-        <div className="text-sm font-normal self-end">
-          ({images.length} {images.length === 1 ? "image" : "images"})
-        </div>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {images.map((image) => (
-          <GalleryCard
-            key={image.id}
-            imageUrl={image.imageUrl}
-            prompt={image.prompt}
-            model={image.model ?? ""}
-            createdAt={image.createdAt}
-          />
-        ))}
-      </div>
+      {images.length > 0 && (
+        <>
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-2xl font-semibold">Gallery</div>
+            <div className="text-sm font-normal self-end">
+              ({images.length} {images.length === 1 ? "image" : "images"})
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {images.map((image) => (
+              <GalleryCard
+                key={image.id}
+                imageUrl={image.imageUrl}
+                prompt={image.prompt}
+                model={image.model ?? ""}
+                createdAt={image.createdAt}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {isFetchingNextPage && <LoadingSpinner />}
       {!hasNextPage && (
